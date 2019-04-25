@@ -114,11 +114,6 @@ public final class MySQLConnection: BasicWorker, DatabaseConnection, DatabaseQue
     
     /// Closes this client.
     public func close(done promise: Promise<Void>?) {
-        switch handler.state {
-        case .waiting: break
-        case .nascent: fatalError("Cannot close while still connecting.")
-        case .callback: fatalError("Cannot close during a query.")
-        }
         self.isClosing = true
         let done = send([.quit]) { packet in
             return true
